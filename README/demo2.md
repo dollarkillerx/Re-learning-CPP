@@ -10,7 +10,7 @@
     - https://docs.microsoft.com/zh-cn/windows/apps/
 
 我们在应用层  编程中 都是调用的  win32api
-64位是内核层
+64位是内核层~
 
 ### 函数分类 (windows api包含数千个可调用的函数  大致可以分为)
 - 基本服务
