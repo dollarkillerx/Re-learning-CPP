@@ -33,3 +33,13 @@
 
 .vs
 .vscode
+
+/demo/Debug
+/demo/.vs
+/demo/x64
+/demo/demo/Debug
+/demo/demo/x64
+demo/demo/Debug
+demo/demo/x64
+demo/Debug
+demo/x64
