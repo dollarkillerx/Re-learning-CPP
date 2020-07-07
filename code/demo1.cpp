@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 using namespace std; // 引入命名空间
 
 void test1();

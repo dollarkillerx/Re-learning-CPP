@@ -45,3 +45,11 @@ demo/demo/x64
 demo/Debug
 demo/Release
 demo/x64
+
+demo2/Debug
+demo2/Release
+demo2/x64
+
+demo3/Debug
+demo3/Release
+demo3/x64
