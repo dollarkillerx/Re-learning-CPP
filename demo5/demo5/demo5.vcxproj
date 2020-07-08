@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{4E928227-B851-4789-B0D9-B1A5FA20A339}</ProjectGuid>
-    <RootNamespace>demo3</RootNamespace>
+    <ProjectGuid>{224B8021-7B1C-4036-A6EE-5EAC75A50333}</ProjectGuid>
+    <RootNamespace>demo5</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,10 +139,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="math.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="math.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,4 +10,7 @@ Re-learning-CPP  底层安全学习
 - 基础语法 demo (用汇编分析CPP)
     - demo1 函数重载与汇编分析
     - demo2 函数默认参数 与 汇编
-    - demo3 extern C 与 汇编
+    - demo3 extern C 
+    - demo4 inline function 与 汇编
+    - demo5 引用
+    - demo6 汇编详解
