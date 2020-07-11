@@ -33,6 +33,9 @@
     - RBX
     - RCX
     - RDX
+
+    - RSP 栈指针
+    - RBP 堆指针
 - 32bit
     - EAX\EBX\ECX\EDX
 - 16 bit
@@ -51,3 +54,87 @@ __asm {
     mov ebx,20H
 }
 ```
+
+### Base
+- `move dest,src`  // ~= dest = src   (mov eax,dword ptr[1122H]去地址的存储空间 内容的转移)
+- `[ 地址值 ]`  // 中括号里面的东西都是地址值
+- word是2字节  dword是4字节(double word)  qword是8字节(quad word)
+- `call 函数地址`
+- `lea dest, [地址值]`  load effect address 地址值的转移 
+- `ret` 函数返回 
+
+#### base base
+- `xor op1,op2` 将op1和op2异或的结果赋值给op1，类似op1=op1 ^ op2
+- `add op1,op2` op1 = op1 + op2
+- `sub op1,op2` op1 = op1 - op2
+- `inc op`  increase 自增 op = op + 1
+- `dec op` 自减
+- `jmp 内存地址` jump 跳转到这个内存地址  (j 开头大多是带条件跳转 一般配合test或者cop等指令使用)
+```
+int a = 3;
+mov dword ptr [ebp-?],3
+int b = a + 3;
+mov eax,a
+add eax,3
+mov dword ptr [ebp-?],eax
+
+
+lea eax,[1122H]  // 直接将地址值 赋值给eax
+mov eax,dword ptr [1122H] // 放这个地址 去dword 4个字节 
+```
+
+### 大小端模式
+低字节的东西 放到地址比较低的地方  (大部分都是小端模式)
+
+```cpp
+    int a = 18;
+00055524 C7 45 EC 12 00 00 00 mov         dword ptr [ebp-14h],12h  
+	int b = 32;
+0005552B C7 45 E0 20 00 00 00 mov         dword ptr [ebp-20h],20h  
+
+	if (a == b)   // cmp  compare 比较
+00055532 8B 45 EC             mov         eax,dword ptr [ebp-14h]  
+00055535 3B 45 E0             cmp         eax,dword ptr [ebp-20h]  
+00055538 75 0F                jne         00055549  // jne: jump no erqual
+	{
+		printf("a = b");
+0005553A 68 DC 9B 05 00       push        59BDCh  
+0005553F E8 D6 BE FF FF       call        0005141A  
+00055544 83 C4 04             add         esp,4  
+	}else
+00055547 EB 0D                jmp         00055556  
+	{
+		printf("a != b");
+00055549 68 E4 9B 05 00       push        59BE4h      //00055549
+0005554E E8 C7 BE FF FF       call        0005141A  
+00055553 83 C4 04             add         esp,4  
+	}
+        return 0;
+00055556 33 C0                xor         eax,eax     // 00055556
+}
+```
+
+#### 参考: 
+- Intel白皮书
+- 汇编金手指
+
+
+### JCC (Jump Condition Code)
+| 命令 | 解释 | 示例 |
+|---- | ----| ----|
+| JE,JZ (equal, zero) | 结果为零则跳转(相等时跳转) | ZF=1|
+| JNE,JNZ (not equal,not zerp) | 结果不为零则跳转(不相等时跳转) |ZF=0 |
+| JS(sign  有符号\无符号) | 结果为负则跳转 | SF=1 |
+| JNS(not sign 无符号\无负号) |结果为负则跳转 | SF=0|
+| JP,JPE (pariy odd) | 结果中有一个数为偶数则跳转 | PF=1 |
+| JNP,JPO(parity odd) | 结果中1的个数为偶数则跳转 | PF=0 |
+| JO (overflow) | 结果溢出则跳转 | OF=1 |
+| JNO (not overflow) | 结果没有溢出则跳转 | OF=0 |
+| JB,JNAE (below not above equal <) | 小于则跳转(无符号数) | CF=1 |
+| JNB,JAE (not below above equal >=) | 大于等于则跳转(无符号数) | CF=1 |
+| JBE,JNA (<=) | 小于等于则跳转(无符号数) | CF=1 or ZF=1 |
+| JNBE,JA (>) | 大于则跳转(有符号数) | CF=0 and ZF=0 |
+| JL,JNGE (<) | 小于则跳转(有符号数) | SD != OF |
+| JLE,JNG (<=) | 小于等于则跳转有符号数)| ZF=1 or SF != OF |
+| JNLE,JG (>) | 大于则跳转(有符号数)| SF=0 and SF=OF |
+
