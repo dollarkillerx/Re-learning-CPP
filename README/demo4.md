@@ -138,3 +138,34 @@ mov eax,dword ptr [1122H] // 放这个地址 去dword 4个字节
 | JLE,JNG (<=) | 小于等于则跳转有符号数)| ZF=1 or SF != OF |
 | JNLE,JG (>) | 大于则跳转(有符号数)| SF=0 and SF=OF |
 
+
+### 指针 引用汇编分析
+```cpp
+	int age = 3;
+00AD4FC2 C7 45 F4 03 00 00 00 mov         dword ptr [ebp-0Ch],3  
+	int* p = &age;
+00AD4FC9 8D 45 F4             lea         eax,[ebp-0Ch]  
+00AD4FCC 89 45 E8             mov         dword ptr [ebp-18h],eax  
+	*p = 6;
+00AD4FCF 8B 45 E8             mov         eax,dword ptr [ebp-18h]  
+00AD4FD2 C7 00 06 00 00 00    mov         dword ptr [eax],6
+```
+##### 小试牛刀
+```cpp
+int a = 19;
+int*p = &a;
+*p += 20;
+```
+更具以上cpp写出其汇编代码
+```cpp
+mov dword ptr[ebp-10],19  // ebp-10 是假设
+
+lea eax,[ebp-10]
+mov dword ptr[ebp-20],eax  // int*p = &a
+
+mov eax,dword ptr[ebp-20]   // 获取到p
+mov ecx,dword ptr[eax]      // 获取*p的值
+add ecx,20                  // ecx = 19 + 20
+mov edx,dword ptr[ebp-20]   // 获取到p
+mov dword ptr[edx],ecx      // *p = ecx
+```
