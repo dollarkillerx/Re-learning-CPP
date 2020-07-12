@@ -230,3 +230,68 @@ int main()
 ```
 
 ### 虚表
+虚函数的实现 指向的虚表  虚表中有调用函数地址的信息
+
+举一个栗子
+```cpp
+struct Animal {
+	int m_age;
+	int m_size;
+	virtual void speak() {
+		"..."
+	}
+	virtual void run() {
+		"..."
+	}
+}
+
+struct Person: Animal {
+	void speak() {
+		"..."
+	}
+	void run() {
+		"..."
+	}
+}
+```
+此时 Person的内存结构
+	- 虚表地址 （会新增加一个虚表 地址  指向虚表 里面有person::cat person:run的函数地址）
+	- m_age 地址
+	- m_size 地址
+```cpp
+汇编代码:
+Animal *cat = new Person();
+cat->speak();
+// 假设ebp-8为cat地址
+
+mov eax,dword ptr [ebp-8]
+mov edx,dword ptr [eax] // eax 取到前4个字节
+
+// 取出speack 函数地址
+mov eax,dword ptr[edx]
+call edx
+```
+父类指针指向子类对象 使用到多态特性是 父类析构函数 必须申明为virtual虚函数
+
+### 纯虚函数 就像interface  定义接口规范
+```cpp
+struct Animal{
+	virtual void speak();
+	virtual void run();
+}
+```
+
+### 多继承
+cpp 运行一个类 可以有多个父类 (但是不建议使用  这样会增加代码的复杂度)
+```cpp
+class Car: h1,h2,h3 {
+	// car 继承了 h1 h2 h3
+}
+```
+
+### static 静态成员
+- 修饰成员变量\函数
+- 存储在 (全局区 数据段)
+```cpp
+
+```

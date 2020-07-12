@@ -1,47 +1,25 @@
 #include <iostream>
 using namespace std;
 
-struct Animal
+class Car
 {
-	virtual void speack() // 注意使用虚函数修饰才实现了 多态
-	{
-		cout << "Animal::speak" << endl;
-	}
-	virtual void run()
-	{
-		cout << "Animal::run()" << endl;
-	}
-};
-
-struct Cat : Animal
-{
-	// 自动继承父类方法
-};
-
-struct Dog : Animal
-{
-	void speack() // 重写父类方法  
-	{
-		cout << "Dog::speak" << endl;
-	}
+public:
+	static int m_price;
 	void run()
 	{
-		cout << "Dog::run()" << endl;
+		cout << "m price: "<< this->m_price << endl;
 	}
 };
+
+// 初始化成员变量   (静态变量 需要在外面初始化 不依赖于对象存在)
+int Car::m_price = 0;
 
 int main()
 {
-	Dog* dog1 = new Dog();
-	dog1->run();
-	dog1->speack();
+	Car car1;
+	car1.m_price += 100;
+	Car::m_price += 3000;
 
-	Animal* dog = new  Dog();
-	dog->run();   // 如果 没有使用虚函数 修饰 是没有实现多态的 调用只会调用父类原有的方法
-	dog->speack();
-
-	Animal* cat = new Cat();
-	cat->run();
-	cat->speack();
+	car1.run();
 	return 0;
 }
