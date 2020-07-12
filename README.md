@@ -1,5 +1,6 @@
 # Re-learning-CPP
 Re-learning-CPP  底层安全学习
+底层汇编的角度学习CPP
 
 ## 目录大纲
 - [What DLL](./README/demo1.md)
@@ -14,4 +15,4 @@ Re-learning-CPP  底层安全学习
     - demo4 inline function 与 汇编
     - demo5 引用
     - demo6 [汇编详解](./README/demo4.md)  
-    - demo7 [面向对象](./README/demo5.md)
+    - demo7 [面向对象 与 内存布局](./README/demo5.md)

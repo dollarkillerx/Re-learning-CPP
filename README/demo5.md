@@ -94,3 +94,139 @@ int main()
 	cout << *p1 << endl;
 	cout << *p2 << endl;
 ```
+
+### namespace
+命名空间避免重复的相同的命名冲突  和package 好像啊
+```cpp
+#include <iostream>
+using namespace std;
+
+class Person
+{
+	int m_age;
+};
+
+namespace csgo
+{
+	class Person
+	{
+		int m_height;
+	};
+}
+
+int main()
+{
+	Person pc;
+
+	csgo::Person pcx;
+	
+	return 0;
+}
+```
+默认全局命名空间 没有名称
+
+##### 命名空间合并
+```cpp
+namespace HE {
+	int g_age;
+}
+namespace HE {
+	int g_int;
+}
+
+等价于
+namespace HE {
+	int g_age;
+	int g_int;
+}
+```
+#### 继承
+```cpp
+struct Person
+{
+	int m_age;
+	void run()
+	{
+		cout << "Run" << endl;
+	}
+};
+
+struct Student : Person
+{
+	int m_score;
+	void study()
+	{
+		cout << "Study" << endl;
+	}
+};
+
+struct Worket : Person 
+{
+	int m_salary;
+	void work()
+	{
+		cout << "Work" << endl;
+	}
+};
+```
+
+### 虚函数  (CPP 实现多态使用虚函数实现)
+- 多态
+	- 特性
+		- 同一个操作作用域不同对象 产生不同结果
+		- 再运行时 识别出真正对象类型 调用对应子类中函数
+	- 要素
+		- 子类重写父类的成员函数
+		- 父类指针指向子类对象
+		- 利用父类指针调用重写成员函数 
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Animal
+{
+	virtual void speack() // 注意使用虚函数修饰才实现了 多态
+	{
+		cout << "Animal::speak" << endl;
+	}
+	virtual void run()
+	{
+		cout << "Animal::run()" << endl;
+	}
+};
+
+struct Cat: Animal
+{
+	// 自动继承父类方法
+};
+
+struct Dog: Animal
+{
+	void speack() // 重写父类方法  
+	{
+		cout << "Dog::speak" << endl;
+	}
+	void run()
+	{
+		cout << "Dog::run()" << endl;
+	}
+};
+
+int main()
+{
+	Dog* dog1 = new Dog();
+	dog1->run();
+	dog1->speack();
+	
+	Animal *dog =new  Dog();
+	dog->run();   // 如果 没有使用虚函数 修饰 是没有实现多态的 调用只会调用父类原有的方法
+	dog->speack();
+
+	Animal *cat =new Cat();
+	cat->run();
+	cat->speack();
+	return 0;
+}
+```
+
+### 虚表
