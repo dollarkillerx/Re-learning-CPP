@@ -1,23 +1,11 @@
-﻿// demo10.cpp : 定义应用程序的入口点。
-//
+# MFC
+- sdk api, 句柄
+- 消息处理机制
+- 头文件 windows.h
+- 程序入口 winMain
 
-#include "framework.h"
-#include "demo10.h"
-#include <Windows.h>
-#include "resource.h"
-#include "iostream"
-using namespace std;
-
-// 前置声明
-INT_PTR CALLBACK Dlgproc(
-	HWND Arg1,
-	UINT Arg2,
-	WPARAM Arg3,
-	LPARAM Arg4
-);
-void EasyMessage(LPCSTR data);
-// 前置声明结束
-
+c 语言实现win窗口
+```c
 // 6. 处理窗口过程
 // CALLBACK 代表__stdcall
 LRESULT CALLBACK WindowProc(
@@ -128,59 +116,4 @@ int APIENTRY wWinMain( // APIENTER = WINAPI 代表__stdcall 参数传递顺序�
 	//int it = DialogBox(hInstance, MAKEINTRESOURCE(ID_MAIN), NULL, &Dlgproc);
  //   return it;
 }
-
-// 对模态框事件的监听
-INT_PTR CALLBACK Dlgproc(
-	HWND hwndDlg, // 对话框句柄
-	UINT uMags,  // 事件编号
-	WPARAM wParam,
-	LPARAM iParam
-)
-{
-	cout << "In" << endl;
-	switch (uMags)
-	{
-		case WM_INITDIALOG:  // 初始化事件
-		{
-			EasyMessage("首次加载");
-			break;
-		}
-		case WM_CLOSE:     // 当用户点击关闭事件
-		{
-			// MessageBox(NULL, "Close Dialog", "Close", 0); // params: 对话框句柄,具体内容,标题,类型
-			EndDialog(hwndDlg, 0); // 关闭 params: 对话框句柄,返回值
-			break;
-		}
-		case WM_COMMAND: // 按钮事件
-		{
-			switch (wParam)
-			{
-				case ID_YES: // 读取
-				{
-					EasyMessage("read");
-					break;
-				}
-				case ID_NO: // 写入
-				{
-					EasyMessage("write");
-					break;
-				}
-			}
-			break;
-		}
-		default:
-		{
-			// MessageBox(NULL, "Default", "标题", 0);
-			// EndDialog(hwndDlg, 0); // 关闭 params: 对话框句柄,返回值
-			cout << "Out" << endl;
-			break;
-		}
-	}
-	return FALSE;
-}
-
-void EasyMessage(LPCSTR data)
-{
-	MessageBoxA(NULL, data, "TITLE", 0);
-}
-
+```
