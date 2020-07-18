@@ -1,186 +1,217 @@
-﻿// demo10.cpp : 定义应用程序的入口点。
+﻿
+// demo10.cpp: 定义应用程序的类行为。
 //
 
+#include "pch.h"
 #include "framework.h"
+#include "afxwinappex.h"
+#include "afxdialogex.h"
 #include "demo10.h"
-#include <Windows.h>
-#include "resource.h"
-#include "iostream"
-using namespace std;
+#include "MainFrm.h"
 
-// 前置声明
-INT_PTR CALLBACK Dlgproc(
-	HWND Arg1,
-	UINT Arg2,
-	WPARAM Arg3,
-	LPARAM Arg4
-);
-void EasyMessage(LPCSTR data);
-// 前置声明结束
+#include "demo10Doc.h"
+#include "demo10View.h"
 
-// 6. 处理窗口过程
-// CALLBACK 代表__stdcall
-LRESULT CALLBACK WindowProc(
-	HWND hwnd, // 消息所属窗口句柄
-	UINT uMsg, // 具体消息名称， WM_XXX
-	WPARAM wParam, // 键盘附加消息
-	LPARAM lParam // 鼠标附加
-)
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+
+// Cdemo10App
+
+BEGIN_MESSAGE_MAP(Cdemo10App, CWinAppEx)
+	ON_COMMAND(ID_APP_ABOUT, &Cdemo10App::OnAppAbout)
+	// 基于文件的标准文档命令
+	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
+	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
+	// 标准打印设置命令
+	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
+END_MESSAGE_MAP()
+
+
+// Cdemo10App 构造
+
+Cdemo10App::Cdemo10App() noexcept
 {
-	return 0;
+	m_bHiColorIcons = TRUE;
+
+	// 支持重新启动管理器
+	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
+#ifdef _MANAGED
+	// 如果应用程序是利用公共语言运行时支持(/clr)构建的，则: 
+	//     1) 必须有此附加设置，“重新启动管理器”支持才能正常工作。
+	//     2) 在您的项目中，您必须按照生成顺序向 System.Windows.Forms 添加引用。
+	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
+#endif
+
+	// TODO: 将以下应用程序 ID 字符串替换为唯一的 ID 字符串；建议的字符串格式
+	//为 CompanyName.ProductName.SubProduct.VersionInformation
+	SetAppID(_T("demo10.AppID.NoVersion"));
+
+	// TODO:  在此处添加构造代码，
+	// 将所有重要的初始化放置在 InitInstance 中
 }
 
+// 唯一的 Cdemo10App 对象
 
-int APIENTRY wWinMain( // APIENTER = WINAPI 代表__stdcall 参数传递顺序： 从右到左 依次入栈 并且函数返回前 清空堆栈
-					_In_ HINSTANCE hInstance, // 应用程序句柄
-                     _In_opt_ HINSTANCE hPrevInstance, // 上一个应用程序句柄，在win32环境下，参数一般为NULL 不起作用了
-                     _In_ LPWSTR    lpCmdLine, // char *argv[] 命令行参数
-                     _In_ int       nCmdShow)		// 显示命令，最大化 最小化 正常
+Cdemo10App theApp;
+
+
+// Cdemo10App 初始化
+
+BOOL Cdemo10App::InitInstance()
 {
-	// 1. 设计窗口
-	// 2. 注册窗口
-	// 3. 创建窗口
-	// 4. 显示和更新
-	// 5. 通过循环取消息
-	// 6. 处理消息
+	// 如果一个运行在 Windows XP 上的应用程序清单指定要
+	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
+	//则需要 InitCommonControlsEx()。  否则，将无法创建窗口。
+	INITCOMMONCONTROLSEX InitCtrls;
+	InitCtrls.dwSize = sizeof(InitCtrls);
+	// 将它设置为包括所有要在应用程序中使用的
+	// 公共控件类。
+	InitCtrls.dwICC = ICC_WIN95_CLASSES;
+	InitCommonControlsEx(&InitCtrls);
+
+	CWinAppEx::InitInstance();
 
 
-	// 1. 设计窗口
-	WNDCLASS wc;
-	wc.cbClsExtra = 0; // 类的 额外的内存
-	wc.cbWndExtra = 0; // 窗口的额外的内存
-	wc.hbrBackground =(HBRUSH) GetStockObject(WHITE_BRUSH);// 设置背景
-	wc.hCursor = LoadCursor(NULL,IDC_HAND);// 设置光标  (第一个参数为NULL使用系统提供的光标)
-	wc.hIcon = LoadIcon(NULL,IDI_ERROR); // 设置图标
-	wc.hInstance = hInstance; // 应用程序句柄地址
-	//wc.lpfnWndProc = WindowProc;// 回调函数 窗口过程
-	wc.lpszClassName = TEXT("Win"); // 指定窗口类名称
-	wc.lpszMenuName = NULL;// 菜单名称
-	wc.style = 0; // 显示风格 0默认风格
-
-	// 2.设计窗口
-	RegisterClass(&wc);
-
-	// 3.创建窗口
-	/*CreateWindowA(
-	 *lpClassName, // 类名
-	 *lpWindowName, // 窗口标题名
-	 *dwStyle,  // 风格 WS_OVERLAPPENDWINDOW
-	 *x,  // 显示坐标 CW_USEDEFAULT 使用默认值
-	 *y, 
-	nWidth,  // 宽高 
-	nHeight,
-	hWndParent, // 父窗口 NULL
-	hMenu,  // 菜单NULL
-	hInstance,  // 实际句柄 hInstance
-	lpParam // 附加值 鼠标附加值
-	)*/
-	HWND hwnd = CreateWindow(
-		wc.lpszClassName,
-		TEXT("WINDOWS"),
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		NULL,
-		NULL,
-		hInstance,
-		NULL,
-	);
-
-	// 4.显示和更新
-	ShowWindow(hwnd,SW_SHOWNORMAL);
-	UpdateWindow(hwnd);
-
-	// 5. 通过循环去取消息
-	/**
-		HWND        hwnd;        主窗口句柄
-		UINT        message;      具体消息名称
-		WPARAM      wParam;  附加消息 键盘
-		LPARAM      lParam;     附加消息 鼠标消息
-		DWORD       time;        消息产生时间
-		POINT       pt;               附加消息，鼠标消息 xy  
-	 */
-	MSG msg;
-	while (true)
+	// 初始化 OLE 库
+	if (!AfxOleInit())
 	{
-		/**
-		 *     _Out_ LPMSG lpMsg,        消息指针
-			    _In_opt_ HWND hWnd,    捕获窗口 NULL代表捕获所有窗口消息
-			    _In_ UINT wMsgFilterMin, 最小和最大过滤消息 一般填入0 代表捕获所有消息 
-			    _In_ UINT wMsgFilterMax
-		 */
-		if(GetMessage(&msg,NULL,0,0) == FALSE)
-		{
-			break;
-		}
-		// 翻译消息
-		TranslateMessage(&msg); // 解析组合键
-		// 分发消息
-		DispatchMessage(&msg);
+		AfxMessageBox(IDP_OLE_INIT_FAILED);
+		return FALSE;
 	}
 
-	return 0;
+	AfxEnableControlContainer();
 
-	//// 显示窗口
-	//// params: 句柄，窗口ID,拥有此窗口的句柄,指向对话框过程的指针
-	//int it = DialogBox(hInstance, MAKEINTRESOURCE(ID_MAIN), NULL, &Dlgproc);
- //   return it;
+	EnableTaskbarInteraction(FALSE);
+
+	// 使用 RichEdit 控件需要 AfxInitRichEdit2()
+	// AfxInitRichEdit2();
+
+	// 标准初始化
+	// 如果未使用这些功能并希望减小
+	// 最终可执行文件的大小，则应移除下列
+	// 不需要的特定初始化例程
+	// 更改用于存储设置的注册表项
+	// TODO: 应适当修改该字符串，
+	// 例如修改为公司或组织名
+	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
+	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
+
+
+	InitContextMenuManager();
+
+	InitKeyboardManager();
+
+	InitTooltipManager();
+	CMFCToolTipInfo ttParams;
+	ttParams.m_bVislManagerTheme = TRUE;
+	theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
+		RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
+
+	// 注册应用程序的文档模板。  文档模板
+	// 将用作文档、框架窗口和视图之间的连接
+	CSingleDocTemplate* pDocTemplate;
+	pDocTemplate = new CSingleDocTemplate(
+		IDR_MAINFRAME,
+		RUNTIME_CLASS(Cdemo10Doc),
+		RUNTIME_CLASS(CMainFrame),       // 主 SDI 框架窗口
+		RUNTIME_CLASS(Cdemo10View));
+	if (!pDocTemplate)
+		return FALSE;
+	AddDocTemplate(pDocTemplate);
+
+
+	// 分析标准 shell 命令、DDE、打开文件操作的命令行
+	CCommandLineInfo cmdInfo;
+	ParseCommandLine(cmdInfo);
+
+
+
+	// 调度在命令行中指定的命令。  如果
+	// 用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
+	if (!ProcessShellCommand(cmdInfo))
+		return FALSE;
+
+	// 唯一的一个窗口已初始化，因此显示它并对其进行更新
+	m_pMainWnd->ShowWindow(SW_SHOW);
+	m_pMainWnd->UpdateWindow();
+	return TRUE;
 }
 
-// 对模态框事件的监听
-INT_PTR CALLBACK Dlgproc(
-	HWND hwndDlg, // 对话框句柄
-	UINT uMags,  // 事件编号
-	WPARAM wParam,
-	LPARAM iParam
-)
+int Cdemo10App::ExitInstance()
 {
-	cout << "In" << endl;
-	switch (uMags)
-	{
-		case WM_INITDIALOG:  // 初始化事件
-		{
-			EasyMessage("首次加载");
-			break;
-		}
-		case WM_CLOSE:     // 当用户点击关闭事件
-		{
-			// MessageBox(NULL, "Close Dialog", "Close", 0); // params: 对话框句柄,具体内容,标题,类型
-			EndDialog(hwndDlg, 0); // 关闭 params: 对话框句柄,返回值
-			break;
-		}
-		case WM_COMMAND: // 按钮事件
-		{
-			switch (wParam)
-			{
-				case ID_YES: // 读取
-				{
-					EasyMessage("read");
-					break;
-				}
-				case ID_NO: // 写入
-				{
-					EasyMessage("write");
-					break;
-				}
-			}
-			break;
-		}
-		default:
-		{
-			// MessageBox(NULL, "Default", "标题", 0);
-			// EndDialog(hwndDlg, 0); // 关闭 params: 对话框句柄,返回值
-			cout << "Out" << endl;
-			break;
-		}
-	}
-	return FALSE;
+	//TODO: 处理可能已添加的附加资源
+	AfxOleTerm(FALSE);
+
+	return CWinAppEx::ExitInstance();
 }
 
-void EasyMessage(LPCSTR data)
+// Cdemo10App 消息处理程序
+
+
+// 用于应用程序“关于”菜单项的 CAboutDlg 对话框
+
+class CAboutDlg : public CDialogEx
 {
-	MessageBoxA(NULL, data, "TITLE", 0);
+public:
+	CAboutDlg() noexcept;
+
+// 对话框数据
+#ifdef AFX_DESIGN_TIME
+	enum { IDD = IDD_ABOUTBOX };
+#endif
+
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+
+// 实现
+protected:
+	DECLARE_MESSAGE_MAP()
+};
+
+CAboutDlg::CAboutDlg() noexcept : CDialogEx(IDD_ABOUTBOX)
+{
 }
+
+void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialogEx::DoDataExchange(pDX);
+}
+
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+END_MESSAGE_MAP()
+
+// 用于运行对话框的应用程序命令
+void Cdemo10App::OnAppAbout()
+{
+	CAboutDlg aboutDlg;
+	aboutDlg.DoModal();
+}
+
+// Cdemo10App 自定义加载/保存方法
+
+void Cdemo10App::PreLoadState()
+{
+	BOOL bNameValid;
+	CString strName;
+	bNameValid = strName.LoadString(IDS_EDIT_MENU);
+	ASSERT(bNameValid);
+	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
+	bNameValid = strName.LoadString(IDS_EXPLORER);
+	ASSERT(bNameValid);
+	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EXPLORER);
+}
+
+void Cdemo10App::LoadCustomState()
+{
+}
+
+void Cdemo10App::SaveCustomState()
+{
+}
+
+// Cdemo10App 消息处理程序
+
+
 

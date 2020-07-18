@@ -18,5 +18,16 @@ Re-learning-CPP  底层安全学习
     - demo7 [面向对象 与 内存布局](./README/demo5.md)
     - demo8 [template & 泛形](./README/demo6.md)
     - demo9 [高级语法](./README/demo7.md)
-- demo10 [MFC](./README/demo8.md)
-- 
+- demo10 [MFC](./README/demo8.md)  
+    - code:
+        - demo11 重0开始创建  (比较底层)
+            - mfc头文件`afxwin.h`
+            - 自定义类继承`CWinApp`
+            - 程序入口 `InitInstance`
+            - 入口 窗口窗口
+            - 窗口类 `MyFrame` 继承 `CFrameWind`
+            - `MyFrame`构造中`Create(NULL,标题名)`
+        - demo10 利用向导
+        - demo12 基于对话框的编程
+        - demo13 静态文本
+    
