@@ -30,4 +30,14 @@ Re-learning-CPP  底层安全学习
         - demo10 利用向导
         - demo12 基于对话框的编程
         - demo13 静态文本
+        - demo14 编写辅助外观
+
+# 逆向阶段
+### 毛坯
+- 基础 C/CPP/汇编/elang (上面已经处理了部分了)
+- Tools CheatEngine/IDA/Olydbg
+- 分析
+    - 漏洞数据
+    - 算法分析
+- 实践
     
