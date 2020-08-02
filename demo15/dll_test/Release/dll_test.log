@@ -1,0 +1,4 @@
+﻿  main.cpp
+C:\Users\Administrator\Desktop\Github\cpp\Re-learning-CPP\demo15\dll_test\lib.h(23,74): error C2664: “FARPROC GetProcAddress(HMODULE,LPCSTR)”: 无法将参数 2 从“const wchar_t [9]”转换为“LPCSTR”
+C:\Users\Administrator\Desktop\Github\cpp\Re-learning-CPP\demo15\dll_test\lib.h(23,58): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\libloaderapi.h(342,1): message : 参见“GetProcAddress”的声明

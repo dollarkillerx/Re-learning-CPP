@@ -1,0 +1,9 @@
+﻿  pch.cpp
+  dllmain.cpp
+    正在创建库 C:\Users\Administrator\Desktop\Github\cpp\Re-learning-CPP\demo15\Release\dlltest.lib 和对象 C:\Users\Administrator\Desktop\Github\cpp\Re-learning-CPP\demo15\Release\dlltest.exp
+  正在生成代码
+  222 of 226 functions (98.2%) were compiled, the rest were copied from previous compilation.
+    212 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  dlltest.vcxproj -> C:\Users\Administrator\Desktop\Github\cpp\Re-learning-CPP\demo15\Release\dlltest.dll
